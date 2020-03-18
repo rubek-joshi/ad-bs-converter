@@ -278,14 +278,14 @@ function countBSDays(date) {
   var dateObj = { year: dateArr[2], month: dateArr[1], day: dateArr[0] };
 
   var inc = false;
-  if (dateArr[0] > base_bs.year) {
+  if (dateArr[2] > base_bs.year) {
     inc = true;
-  } else if (dateArr[0] === base_bs.year && dateArr[1] > base_bs.month) {
+  } else if (dateArr[2] === base_bs.year && dateArr[1] > base_bs.month) {
     inc = true;
   } else if (
-    dateArr[0] === base_bs.year &&
+    dateArr[2] === base_bs.year &&
     dateArr[1] === base_bs.month &&
-    dateArr[2] > base_bs.day
+    dateArr[0] > base_bs.day
   ) {
     inc = true;
   }
@@ -325,11 +325,11 @@ function countBSDays(date) {
 function countADDays(date) {
   var dayCount = 0,
     i = 0;
-  var dateArr = date.split("/").map(function(str) {
+  var dateArr = date.split(/\/|-| /).map(function(str) {
     return Number(str);
   });
 
-  var dateObj = { year: dateArr[0], month: dateArr[1] - 1, day: dateArr[2] };
+  var dateObj = { year: dateArr[2], month: dateArr[1] - 1, day: dateArr[0] };
 
   var date1 = new Date(base_ad.year, base_ad.month - 1, base_ad.day);
   var date2 = new Date(dateObj.year, dateObj.month, dateObj.day);
