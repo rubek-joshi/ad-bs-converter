@@ -259,7 +259,7 @@ var defaults = {
 
 function getMaxMonthDays(month, year){
   if(Object.keys(calendar_data).indexOf(year) != -1){
-    return calendar_data.year[month-1]
+    return calendar_data[year][month-1]
   } else {
     return 32
   }
