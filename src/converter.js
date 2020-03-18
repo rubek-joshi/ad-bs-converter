@@ -257,6 +257,14 @@ var defaults = {
  '2100': [ 31, 32, 31, 32, 30, 31, 30, 29, 30, 29, 30, 30, 365 ]
  */
 
+function getMaxMonthDays(month, year){
+  if(Object.keys(calendar_data).indexOf(year) != -1){
+    return calendar_data.year[month-1]
+  } else {
+    return 32
+  }
+}
+
 function countDaysInYear(year) {
   if (typeof calendar_data[year] === "undefined") {
     return daysInYear;
@@ -431,3 +439,4 @@ function ad2bs(date) {
 
 exports.bs2ad = bs2ad;
 exports.ad2bs = ad2bs;
+exports.getMaxMonthDays = getMaxMonthDays;
