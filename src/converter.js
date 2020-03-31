@@ -147,14 +147,14 @@ function getMaxMonthDays(month, year){
 }
 
 function countBSDays(date) {
-  var dayCount = 0;
-  var dateArr = date.split(/\/|-| /).map(function(str) {
+  let dayCount = 0;
+  const dateArr = date.split(/\/|-| /).map(function(str) {
     return Number(str);
   });
 
-  var dateObj = { year: dateArr[0], month: dateArr[1], day: dateArr[2] };
+  const dateObj = { year: dateArr[0], month: dateArr[1], day: dateArr[2] };
 
-  var inc = false;
+  let inc = false;
   if (dateArr[0] > base_bs.year) {
     inc = true;
   } else if (dateArr[0] === base_bs.year && dateArr[1] > base_bs.month) {
@@ -167,9 +167,9 @@ function countBSDays(date) {
     inc = true;
   }
 
-  var start = {};
-  var end = {};
-  var factor = 1;
+  let start = {};
+  let end = {};
+  let factor = 1;
 
   if (inc === true) {
     start = base_bs;
@@ -180,17 +180,17 @@ function countBSDays(date) {
     factor = -1;
   }
 
-  for (var i = start.year; i <= end.year; i++) {
+  for (let i = start.year; i <= end.year; i++) {
     dayCount += calendar_data[i][12];
   }
 
-  for (var i = 0; i < start.month - 1; i++) {
+  for (let i = 0; i < start.month - 1; i++) {
     dayCount -= calendar_data[start.year][i];
   }
 
   //dayCount += calendar_data[start.year][12 - 1];
 
-  for (var i = end.month - 1; i < 12; i++) {
+  for (let i = end.month - 1; i < 12; i++) {
     dayCount -= calendar_data[end.year][i];
   }
 
