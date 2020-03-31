@@ -1,43 +1,6 @@
 "use strict";
 
-var getNepaliNumber = require("get-nepali-number");
-var getNepDayOfWeek = require("get-nepday-of-week");
-var defaults = {
-    lang: "ne", //possible values: ne for nepali text, en for english text
-    //dateFormat: 'yyyy/mm/dd',     // not implemented yet
-    monthFormat: "full", //possible values: full for full name, short for short name
-    daysFormat: "min" //possible values: full for full name, short for short name and min for minified name
-  },
-  ne = {
-    monthsName: [
-      "बैशाख",
-      "जेष्ठ",
-      "आषाढ",
-      "श्रावण",
-      "भाद्र",
-      "आश्विन",
-      "कार्तिक",
-      "मंसिर",
-      "पौष",
-      "माघ",
-      "फाल्गुन",
-      "चैत्र"
-    ],
-    monthsShortName: [
-      "बै",
-      "जे",
-      "आषा",
-      "श्रा",
-      "भा",
-      "आश",
-      "का",
-      "मं",
-      "पौ",
-      "मा",
-      "फा",
-      "चै"
-    ]
-  },
+var 
   en = {
     monthsName: [
       "Baisakh",
@@ -107,22 +70,6 @@ var defaults = {
     "Dec"
   ],
   daysInYear = 365,
-  minMonth = 1,
-  minDays = 1,
-  maxMonth = 12,
-  maxDays = 32,
-  nums = {
-    0: "०",
-    1: "१",
-    2: "२",
-    3: "३",
-    4: "४",
-    5: "५",
-    6: "६",
-    7: "७",
-    8: "८",
-    9: "९"
-  },
   base_ad = { year: 2017, month: 2, day: 11, dayOfWeek: 6 }, // dayOfWeek: 0 for sunday, 1 for monday and so on
   base_bs = { year: 2073, month: 10, day: 29, dayOfWeek: 6 },
   calendar_data = {
@@ -331,25 +278,22 @@ function countBSDays(date) {
 }
 
 function countADDays(date) {
-  var dayCount = 0,
-    i = 0;
-  var dateArr = date.split(/\/|-| /).map(function(str) {
+  const dateArr = date.split(/\/|-| /).map(function(str) {
     return Number(str);
   });
 
-  var dateObj = { year: dateArr[0], month: dateArr[1] - 1, day: dateArr[2] };
+  const dateObj = { year: dateArr[0], month: dateArr[1] - 1, day: dateArr[2] };
 
-  var date1 = new Date(base_ad.year, base_ad.month - 1, base_ad.day);
-  var date2 = new Date(dateObj.year, dateObj.month, dateObj.day);
-  var timeDiff = date2.getTime() - date1.getTime();
-  var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+  const date1 = new Date(base_ad.year, base_ad.month - 1, base_ad.day);
+  const date2 = new Date(dateObj.year, dateObj.month, dateObj.day);
+  const timeDiff = date2.getTime() - date1.getTime();
+  const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return { diffDays: diffDays, dateInAd: date2 };
 }
 
 function offsetBSDays(dayData) {
-  var dayCount = dayData.diffDays,
-    dateInAd = dayData.dateInAd;
-  var bs_date = JSON.parse(JSON.stringify(base_bs));
+  let dayCount = dayData.diffDays;
+  let bs_date = JSON.parse(JSON.stringify(base_bs));
   if (dayCount >= 0) {
     bs_date.day += dayCount;
     while (bs_date.day > calendar_data[bs_date.year][bs_date.month - 1]) {
@@ -376,25 +320,9 @@ function offsetBSDays(dayData) {
     }
     bs_date.day = dayCount;
   }
-  var month = dateInAd.getMonth(),
-    dayOfWeek = dateInAd.getDay();
-  var npDayOfWeek = getNepDayOfWeek(dayOfWeek),
-    enDayOfWeek = getNepDayOfWeek(dayOfWeek, { lang: "en" });
 
-  var totalDays = calendar_data[bs_date.year][bs_date.month - 1];
-  var dateObj = {
-    ne: {
-      year: getNepaliNumber(bs_date.year),
-      month: getNepaliNumber(bs_date.month),
-      day: getNepaliNumber(bs_date.day),
-      strMonth: ne.monthsName[bs_date.month - 1],
-      strShortMonth: ne.monthsShortName[bs_date.month - 1],
-      dayOfWeek: getNepaliNumber(dayOfWeek),
-      strDayOfWeek: npDayOfWeek["full"],
-      strShortDayOfWeek: npDayOfWeek["short"],
-      strMinDayOfWeek: npDayOfWeek["min"],
-      totalDaysInMonth: getNepaliNumber(totalDays)
-    },
+  const totalDays = calendar_data[bs_date.year][bs_date.month - 1];
+  const dateObj = {
     en: {
       year: bs_date.year,
       month: bs_date.month,
