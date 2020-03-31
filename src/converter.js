@@ -1,75 +1,9 @@
 "use strict";
 
+var getNepaliNumber = require('get-nepali-number');
+var getNepDayOfWeek = require('get-nepday-of-week');
+
 var 
-  en = {
-    monthsName: [
-      "Baisakh",
-      "Jestha",
-      "Ashadh",
-      "Shrawan",
-      "Bhadra",
-      "Ashwin",
-      "Kartik",
-      "Mangsir",
-      "Paush",
-      "Mangh",
-      "Falgun",
-      "Chaitra"
-    ],
-    monthsShortName: [
-      "Bai",
-      "Je",
-      "As",
-      "Shra",
-      "Bha",
-      "Ash",
-      "Kar",
-      "Mang",
-      "Pau",
-      "Ma",
-      "Fal",
-      "Chai"
-    ]
-  },
-  engDaysName = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ],
-  engDaysShortName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  engMonthsName = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ],
-  engMonthsShortName = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ],
-  daysInYear = 365,
   base_ad = { year: 2017, month: 2, day: 11, dayOfWeek: 6 }, // dayOfWeek: 0 for sunday, 1 for monday and so on
   base_bs = { year: 2073, month: 10, day: 29, dayOfWeek: 6 },
   calendar_data = {
@@ -212,18 +146,6 @@ function getMaxMonthDays(month, year){
   }
 }
 
-function countDaysInYear(year) {
-  if (typeof calendar_data[year] === "undefined") {
-    return daysInYear;
-  }
-
-  return calendar_data[year][12];
-}
-
-function isLeapYear(year) {
-  return daysInYear !== countDaysInYear(year);
-}
-
 function countBSDays(date) {
   var dayCount = 0;
   var dateArr = date.split(/\/|-| /).map(function(str) {
@@ -321,38 +243,24 @@ function offsetBSDays(dayData) {
     bs_date.day = dayCount;
   }
 
-  const totalDays = calendar_data[bs_date.year][bs_date.month - 1];
   const dateObj = {
     en: {
       year: bs_date.year,
       month: bs_date.month,
-      day: bs_date.day,
-      strMonth: en.monthsName[bs_date.month - 1],
-      strShortMonth: en.monthsShortName[bs_date.month - 1],
-      dayOfWeek: dayOfWeek,
-      strDayOfWeek: enDayOfWeek["full"],
-      strShortDayOfWeek: enDayOfWeek["short"],
-      strMinDayOfWeek: enDayOfWeek["min"],
-      totalDaysInMonth: totalDays
+      day: bs_date.day
     }
   };
   return dateObj;
 }
 
 function offsetADDays(dayCount) {
-  var date = new Date(base_ad.year, base_ad.month - 1, base_ad.day);
+  let date = new Date(base_ad.year, base_ad.month - 1, base_ad.day);
   date.setDate(date.getDate() + dayCount);
-  var month = date.getMonth(),
-    dayOfWeek = date.getDay();
-  var dateObj = {
+  const month = date.getMonth();
+  const dateObj = {
     year: date.getFullYear(),
     month: month + 1,
-    strMonth: engMonthsName[month],
-    strShortMonth: engMonthsShortName[month],
     day: date.getDate(),
-    dayOfWeek: dayOfWeek,
-    strDayOfWeek: engDaysName[dayOfWeek],
-    strShortDayOfWeek: engDaysShortName[dayOfWeek]
   };
   return dateObj;
 }
